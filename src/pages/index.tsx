@@ -2,8 +2,11 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import Navbar from "../components/Navbar.";
+import { trpc } from "../utils/trpc";
 
 const IndexPage: NextPage = () => {
+  const {} = trpc.useQuery(["auth.me"]);
+
   return (
     <>
       <Head>

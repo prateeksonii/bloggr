@@ -1,8 +1,8 @@
 import * as trpc from "@trpc/server";
 import { TRPCError } from "@trpc/server";
-import argon2 from "argon2";
-import { createUserValidator } from "../../shared/create-user.validator";
+import { createUserValidator } from "../../shared/create-user.validator copy";
 import { createRouter } from "../context";
+import { hashPassword } from "../utils/argon2";
 
 export const usersRouter = createRouter().mutation("create", {
   input: createUserValidator,
@@ -20,9 +20,7 @@ export const usersRouter = createRouter().mutation("create", {
       });
     }
 
-    const hashedPassword = await argon2.hash(input.password, {
-      saltLength: 12,
-    });
+    const hashedPassword = await hashPassword(input.password);
 
     const user = await ctx.prisma.user.create({
       data: {

@@ -2,13 +2,14 @@ import { NextPage } from "next";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Navbar from "../components/Navbar.";
-import {
-  CreateUserValidator,
-  createUserValidator,
-} from "../shared/create-user.validator";
+
 import { trpc } from "../utils/trpc";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import {
+  createUserValidator,
+  CreateUserValidator,
+} from "../shared/create-user.validator copy";
 
 const SignupPage: NextPage = () => {
   const {
