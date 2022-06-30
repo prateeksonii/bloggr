@@ -21,17 +21,23 @@ const BlogPage: NextPage = () => {
     <>
       <Navbar />
       <div className="mx-auto w-3/5">
-        <h1 className="text-4xl font-bold tracking-tight">
-          {data?.blog?.title}
-        </h1>
-        <p className="font-light mt-2">
-          Published by{" "}
-          <span className="font-bold">{data?.blog?.author.name}</span> on{" "}
-          <span className="font-bold">
-            {data?.blog?.createdAt.toDateString()}
-          </span>
-        </p>
-        <p className="my-8">{data?.blog?.content}</p>
+        {data?.blog ? (
+          <>
+            <h1 className="text-4xl font-bold tracking-tight">
+              {data?.blog?.title}
+            </h1>
+            <p className="font-light mt-2">
+              Published by{" "}
+              <span className="font-bold">{data?.blog?.author.name}</span> on{" "}
+              <span className="font-bold">
+                {data?.blog?.createdAt.toDateString()}
+              </span>
+            </p>
+            <p className="my-8">{data?.blog?.content}</p>
+          </>
+        ) : (
+          <p>No blog found</p>
+        )}
       </div>
     </>
   );
