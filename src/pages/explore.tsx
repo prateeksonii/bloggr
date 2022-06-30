@@ -10,7 +10,7 @@ const ExplorePage: NextPage = () => {
       </Head>
       <Navbar />
       <div className="w-3/5 mx-auto">
-        <h1>Explore</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight">Explore</h1>
       </div>
     </>
   );
