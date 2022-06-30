@@ -18,6 +18,7 @@ specifiers:
   cookie: ^0.5.0
   eslint: 8.18.0
   eslint-config-next: 12.2.0
+  jotai: ^1.7.3
   jsonwebtoken: ^8.5.1
   next: 12.2.0
   postcss: ^8.4.14
@@ -42,6 +43,7 @@ dependencies:
   '@trpc/server': 9.25.3
   argon2: 0.28.5
   cookie: 0.5.0
+  jotai: 1.7.3_hsmbvjrvt6b6om3iseqj6lghay
   jsonwebtoken: 8.5.1
   next: 12.2.0_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -1660,6 +1662,44 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
+
+  /jotai/1.7.3_hsmbvjrvt6b6om3iseqj6lghay:
+    resolution: {integrity: sha512-7oyKS1cUlwO8bLvhrSrw3/G2tiprmUjt0eK19z4LMiyScsaeqnFwcr+3xaM6N8Ej6iGd0MmBlGhQsmJcnV6+Fw==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@babel/core': '*'
+      '@babel/template': '*'
+      '@urql/core': '*'
+      immer: '*'
+      optics-ts: '*'
+      react: '>=16.8'
+      react-query: '*'
+      valtio: '*'
+      wonka: '*'
+      xstate: '*'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@babel/template':
+        optional: true
+      '@urql/core':
+        optional: true
+      immer:
+        optional: true
+      optics-ts:
+        optional: true
+      react-query:
+        optional: true
+      valtio:
+        optional: true
+      wonka:
+        optional: true
+      xstate:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-query: 3.39.1_biqbaboplfbrettd7655fr4n2y
+    dev: false
 
   /js-sha3/0.8.0:
     resolution: {integrity: sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==}

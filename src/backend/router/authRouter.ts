@@ -48,6 +48,15 @@ export const authRouter = createRouter()
       };
     },
   })
+  .mutation("signout", {
+    resolve({ ctx }) {
+      ctx.res?.setHeader("Set-Cookie", serialize("token", "", { maxAge: 0 }));
+
+      return {
+        ok: true,
+      };
+    },
+  })
   .query("me", {
     async resolve({ ctx }) {
       return {

@@ -4,9 +4,29 @@ import { withTRPC } from "@trpc/next";
 import { AppRouter } from "../backend/router";
 
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import { trpc } from "../utils/trpc";
+import { useAtom } from "jotai";
+import { userAtom } from "../atoms/userAtom";
+import { useEffect, useState } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [user, setUser] = useAtom(userAtom);
+  const [loadingUser, setLoadingUser] = useState(true);
+
+  const { isLoading } = trpc.useQuery(["auth.me"], {
+    onSettled(data, error) {
+      if (error) {
+        toast.error(error.message);
+      }
+
+      setUser(data?.user ?? null);
+      setLoadingUser(false);
+    },
+  });
+
+  if (isLoading || loadingUser) return <div>Checking auth status</div>;
+
   return (
     <>
       <Component {...pageProps} />
@@ -27,6 +47,9 @@ export default withTRPC<AppRouter>({
 
     return {
       url,
+      headers: {
+        cookie: ctx?.req?.headers.cookie,
+      },
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
        */

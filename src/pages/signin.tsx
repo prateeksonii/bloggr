@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { SigninValidator, signinValidator } from "../shared/signin.validator.";
@@ -15,6 +16,8 @@ const SigninPage: NextPage = () => {
     resolver: zodResolver(signinValidator),
   });
 
+  const router = useRouter();
+
   const { mutateAsync } = trpc.useMutation("auth.signin");
 
   const onSubmit: SubmitHandler<SigninValidator> = async (values) => {
@@ -23,6 +26,7 @@ const SigninPage: NextPage = () => {
       error: "Failed to sign in",
       success: "Signed in successfully",
     });
+    await router.replace("/explore");
   };
 
   return (
@@ -60,7 +64,7 @@ const SigninPage: NextPage = () => {
             <p className="text-red-500">{errors.password.message}</p>
           )}
         </label>
-        <button type="submit" className="bg-indigo-600 py-2 px-4 mt-2">
+        <button type="submit" className="bg-indigo-600 py-2 px-4 mt-2 rounded">
           Sign in
         </button>
       </form>
