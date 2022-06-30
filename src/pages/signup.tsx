@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import {
   createUserValidator,
   CreateUserValidator,
-} from "../shared/create-user.validator copy";
+} from "../shared/create-user.validator";
 
 const SignupPage: NextPage = () => {
   const {

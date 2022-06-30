@@ -31,16 +31,11 @@ export const authRouter = createRouter()
         });
       }
 
-      const token = await ctx.prisma.userToken.create({
-        data: {
-          token: signToken(user),
-          userId: user.id,
-        },
-      });
-
       ctx.res?.setHeader(
         "Set-Cookie",
-        serialize("token", token.token, { maxAge: 365 * 24 * 60 * 60 * 1000 })
+        serialize("token", signToken(user), {
+          maxAge: 365 * 24 * 60 * 60 * 1000,
+        })
       );
 
       return {

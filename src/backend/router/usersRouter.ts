@@ -1,6 +1,6 @@
 import * as trpc from "@trpc/server";
 import { TRPCError } from "@trpc/server";
-import { createUserValidator } from "../../shared/create-user.validator copy";
+import { createUserValidator } from "../../shared/create-user.validator";
 import { createRouter } from "../context";
 import { hashPassword } from "../utils/argon2";
 
