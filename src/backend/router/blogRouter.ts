@@ -1,8 +1,35 @@
 import { TRPCError } from "@trpc/server";
+import { blogBySlugValidator } from "../../shared/blog-by-slug.validator";
 import { createBlogValidator } from "../../shared/create-blog.validator";
 import { createRouter } from "../context";
 
 export const blogRouter = createRouter()
+  .query("all", {
+    async resolve({ ctx }) {
+      const blogs = await ctx.prisma.blog.findMany({
+        include: { author: true },
+      });
+
+      return {
+        blogs,
+      };
+    },
+  })
+  .query("bySlug", {
+    input: blogBySlugValidator,
+    async resolve({ input, ctx }) {
+      const blog = await ctx.prisma.blog.findUnique({
+        where: {
+          slug: input.slug,
+        },
+        include: { author: true },
+      });
+
+      return {
+        blog,
+      };
+    },
+  })
   .middleware(({ ctx, next }) => {
     if (!ctx.user)
       throw new TRPCError({

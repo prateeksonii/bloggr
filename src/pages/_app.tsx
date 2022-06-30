@@ -10,6 +10,7 @@ import { useAtom } from "jotai";
 import { userAtom } from "../atoms/userAtom";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import superjson from "superjson";
 
 const protectedRoutes = ["/blog/create"];
 
@@ -54,6 +55,7 @@ export default withTRPC<AppRouter>({
       headers: {
         cookie: ctx?.req?.headers.cookie,
       },
+      transformer: superjson,
     };
   },
   ssr: true,

@@ -4,9 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { verifyToken } from "./utils/jwt";
 import { prisma } from "./utils/prisma";
 
-export type ReqWithUser = NextApiRequest & { user: User | null };
-
-const getUserFromRequest = (req: ReqWithUser) => {
+const getUserFromRequest = (req: NextApiRequest) => {
   const token = req.cookies.token;
 
   if (token) {
@@ -25,7 +23,7 @@ export const createContext = async ({
   req,
   res,
 }: {
-  req: ReqWithUser;
+  req: NextApiRequest;
   res: NextApiResponse;
 }) => {
   const user = getUserFromRequest(req);

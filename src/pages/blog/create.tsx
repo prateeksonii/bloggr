@@ -35,11 +35,11 @@ const CreateBlogPage: NextPage = () => {
           <input
             type="text"
             {...register("title")}
-            className="rounded-md text-2xl bg-zinc-800 outline-none border-none resize-none w-full"
+            className="rounded-md text-2xl bg-zinc-900 outline-none border-none resize-none w-full"
             placeholder="Blog title"
           />
           <textarea
-            className="rounded-md bg-zinc-800 outline-none border-none resize-none w-full min-h-[70vh] p-2 font-mono"
+            className="rounded-md bg-zinc-900 outline-none border-none resize-none w-full min-h-[70vh] p-2 font-mono"
             placeholder="Type markdown here"
             {...register("content")}
           ></textarea>

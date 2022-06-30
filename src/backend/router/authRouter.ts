@@ -46,7 +46,6 @@ export const authRouter = createRouter()
   .mutation("signout", {
     resolve({ ctx }) {
       ctx.res?.setHeader("Set-Cookie", serialize("token", "", { maxAge: 0 }));
-      ctx.req.user = null;
 
       return {
         ok: true,
@@ -55,7 +54,6 @@ export const authRouter = createRouter()
   })
   .query("me", {
     async resolve({ ctx }) {
-      ctx.req.user = ctx.user;
       return {
         user: ctx.user,
       };

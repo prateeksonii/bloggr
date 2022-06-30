@@ -32,6 +32,7 @@ specifiers:
   react-hook-form: ^7.33.0
   react-query: ^3.39.1
   react-toastify: ^9.0.5
+  superjson: ^1.9.1
   tailwindcss: ^3.1.4
   typescript: 4.7.4
   zod: ^3.17.3
@@ -55,6 +56,7 @@ dependencies:
   react-hook-form: 7.33.0_react@18.2.0
   react-query: 3.39.1_biqbaboplfbrettd7655fr4n2y
   react-toastify: 9.0.5_biqbaboplfbrettd7655fr4n2y
+  superjson: 1.9.1
   zod: 3.17.3
 
 devDependencies:
@@ -828,6 +830,13 @@ packages:
   /cookie/0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /copy-anything/3.0.2:
+    resolution: {integrity: sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.7
     dev: false
 
   /core-js-pure/3.23.3:
@@ -1681,6 +1690,11 @@ packages:
     dependencies:
       call-bind: 1.0.2
     dev: true
+
+  /is-what/4.1.7:
+    resolution: {integrity: sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==}
+    engines: {node: '>=12.13'}
+    dev: false
 
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
@@ -2612,6 +2626,13 @@ packages:
         optional: true
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /superjson/1.9.1:
+    resolution: {integrity: sha512-oT3HA2nPKlU1+5taFgz/HDy+GEaY+CWEbLzaRJVD4gZ7zMVVC4GDNFdgvAZt6/VuIk6D2R7RtPAiCHwmdzlMmg==}
+    engines: {node: '>=10'}
+    dependencies:
+      copy-anything: 3.0.2
     dev: false
 
   /supports-color/7.2.0:
