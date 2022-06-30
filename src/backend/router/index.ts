@@ -1,18 +1,6 @@
-import * as trpc from "@trpc/server";
-import { z } from "zod";
+import { createRouter } from "../context";
+import { usersRouter } from "./usersRouter";
 
-export const appRouter = trpc.router().query("hello", {
-  input: z
-    .object({
-      text: z.string().nullish(),
-    })
-    .nullish(),
-  resolve({ input }) {
-    return {
-      greeting: `hello ${input?.text ?? "world"}`,
-    };
-  },
-});
+export const appRouter = createRouter().merge("users.", usersRouter);
 
-// export type definition of API
 export type AppRouter = typeof appRouter;
