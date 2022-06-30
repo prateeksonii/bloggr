@@ -1,7 +1,6 @@
-import { Disclosure, Popover, Transition } from "@headlessui/react";
+import { Popover, Transition } from "@headlessui/react";
 import { useAtom } from "jotai";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 import { userAtom } from "../atoms/userAtom";
@@ -9,8 +8,7 @@ import { trpc } from "../utils/trpc";
 import React from "react";
 
 const Navbar = () => {
-  const router = useRouter();
-  const [user, setUser] = useAtom(userAtom);
+  const [user] = useAtom(userAtom);
   const { mutateAsync } = trpc.useMutation("auth.signout");
   const trpcContext = trpc.useContext();
 
@@ -28,12 +26,15 @@ const Navbar = () => {
     <nav className="w-3/5 mx-auto h-[80px] flex items-center justify-between">
       <div className="tracking-widest text-xl">Bloggr</div>
       {user ? (
-        <div>
+        <div className="flex items-center gap-8">
+          <Link href="/blog/create">
+            <a className="bg-indigo-600 py-2 px-4 rounded-md">Create blog</a>
+          </Link>
           <Popover as="div" className="relative">
             {({ open }) => (
               <>
                 <Popover.Button className="flex items-center gap-2 rounded-md outline-none">
-                  <div className="rounded-full bg-indigo-600 p-2">
+                  <div className="rounded-full bg-zinc-700 p-2">
                     {user.name
                       .split(" ")
                       .map((name) => name[0])

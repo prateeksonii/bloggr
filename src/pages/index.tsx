@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import Navbar from "../components/Navbar.";
+import Navbar from "../components/Navbar";
 
 const IndexPage: NextPage = () => {
   return (

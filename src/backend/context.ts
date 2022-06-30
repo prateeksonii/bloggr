@@ -1,10 +1,12 @@
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import * as trpc from "@trpc/server";
-import * as trpcNext from "@trpc/server/adapters/next";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { verifyToken } from "./utils/jwt";
+import { prisma } from "./utils/prisma";
 
-const getUserFromRequest = (req: NextApiRequest) => {
+export type ReqWithUser = NextApiRequest & { user: User | null };
+
+const getUserFromRequest = (req: ReqWithUser) => {
   const token = req.cookies.token;
 
   if (token) {
@@ -23,14 +25,10 @@ export const createContext = async ({
   req,
   res,
 }: {
-  req: NextApiRequest;
+  req: ReqWithUser;
   res: NextApiResponse;
 }) => {
   const user = getUserFromRequest(req);
-
-  const prisma = new PrismaClient({
-    log: ["query", "info", "warn", "error"],
-  });
 
   return {
     prisma,

@@ -9,10 +9,14 @@ import { trpc } from "../utils/trpc";
 import { useAtom } from "jotai";
 import { userAtom } from "../atoms/userAtom";
 import { useState } from "react";
+import { useRouter } from "next/router";
+
+const protectedRoutes = ["/blog/create"];
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [user, setUser] = useAtom(userAtom);
   const [loadingUser, setLoadingUser] = useState(true);
+  const router = useRouter();
 
   const { isLoading } = trpc.useQuery(["auth.me"], {
     onSettled(data, error) {
@@ -26,6 +30,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   });
 
   if (isLoading || loadingUser) return <div>Checking auth status</div>;
+
+  if (!user && protectedRoutes.includes(router.pathname)) {
+    router.replace("/signin");
+  }
 
   return (
     <>

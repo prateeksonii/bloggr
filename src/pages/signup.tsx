@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Navbar from "../components/Navbar.";
+import Navbar from "../components/Navbar";
 
 import { trpc } from "../utils/trpc";
 import { toast } from "react-toastify";
