@@ -18,7 +18,7 @@ const ExplorePage: NextPage = () => {
         {isLoading && <p>Loading...</p>}
         {isError && <p>Error...</p>}
         {data && data.blogs.length > 0 ? (
-          <div className="my-8 flex flex-col gap-8">
+          <div className="my-8 flex flex-col gap-4">
             {data.blogs.map((blog) => (
               <Link href={`/blog/${blog.slug}`} key={blog.id}>
                 <div className="p-4 bg-zinc-900 rounded-md cursor-pointer">
