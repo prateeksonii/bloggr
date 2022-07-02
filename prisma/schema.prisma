@@ -11,13 +11,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  blogs     Blog[]
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  blogs      Blog[]   @relation(name: "author")
+  likedBlogs Blog[]
 
   @@index([id, email])
 }
@@ -28,9 +29,10 @@ model Blog {
   slug      String   @unique
   content   String
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], name: "author")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  likedBy   User[]
 
   @@index([id, slug])
 }

@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { blogBySlugValidator } from "../../shared/blog-by-slug.validator";
 import { createBlogValidator } from "../../shared/create-blog.validator";
 import { deleteBlogValidator } from "../../shared/delete-blog.validator";
@@ -23,11 +24,12 @@ export const blogRouter = createRouter()
         where: {
           slug: input.slug,
         },
-        include: { author: true },
+        include: { author: true, likedBy: true },
       });
 
       return {
         blog,
+        liked: blog?.likedBy?.some((user) => user.id === ctx.user?.id) ?? false,
       };
     },
   })
@@ -62,10 +64,13 @@ export const blogRouter = createRouter()
     },
   })
   .query("byUser", {
-    async resolve({ input, ctx }) {
+    async resolve({ ctx }) {
       const blogs = await ctx.prisma.blog.findMany({
         where: {
           authorId: ctx.user?.id,
+        },
+        include: {
+          likedBy: true,
         },
       });
 
@@ -89,6 +94,52 @@ export const blogRouter = createRouter()
       await ctx.prisma.blog.delete({
         where: {
           id: input.blogId,
+        },
+      });
+
+      return {
+        ok: true,
+      };
+    },
+  })
+  .mutation("like", {
+    input: z.object({
+      blogId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      await ctx.prisma.blog.update({
+        where: {
+          id: input.blogId,
+        },
+        data: {
+          likedBy: {
+            connect: {
+              id: ctx.user?.id,
+            },
+          },
+        },
+      });
+
+      return {
+        ok: true,
+      };
+    },
+  })
+  .mutation("dislike", {
+    input: z.object({
+      blogId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      await ctx.prisma.blog.update({
+        where: {
+          id: input.blogId,
+        },
+        data: {
+          likedBy: {
+            disconnect: {
+              id: ctx.user?.id,
+            },
+          },
         },
       });
 
