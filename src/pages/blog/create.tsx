@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Navbar from "../../components/Navbar";
+import PageTitle from "../../components/PageTitle";
 import {
   CreateBlogValidator,
   createBlogValidator,
@@ -28,9 +29,10 @@ const CreateBlogPage: NextPage = () => {
     <>
       <Navbar />
       <div className="w-3/5 mx-auto">
+        <PageTitle title="Write your blog" />
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-3 mb-8"
+          className="mt-6 flex flex-col gap-3 mb-8"
         >
           <input
             type="text"

@@ -24,7 +24,9 @@ const Navbar = () => {
 
   return (
     <nav className="w-3/5 mx-auto h-[80px] flex items-center justify-between">
-      <div className="tracking-widest text-xl">Bloggr</div>
+      <Link href="/explore">
+        <a className="tracking-widest text-xl">Bloggr</a>
+      </Link>
       {user ? (
         <div className="flex items-center gap-8">
           <Link href="/blog/create">
@@ -56,8 +58,13 @@ const Navbar = () => {
                   leaveTo="opacity-0 translate-y-1"
                 >
                   <Popover.Panel className="absolute top-[140%] right-0 min-w-[300px]">
-                    <div className="bg-zinc-800 w-full grid gap-3 p-4 rounded-md text-center">
+                    <div className="bg-zinc-900 w-full grid gap-3 p-4 rounded-md text-center">
                       <span>Welcome, {user.name}</span>
+                      <Link href="/profile">
+                        <a className="block py-2 px-4 rounded w-full font-bold bg-zinc-700">
+                          View profile
+                        </a>
+                      </Link>
                       <button
                         className="block py-2 px-4 rounded bg-indigo-600 w-full"
                         onClick={handleSignout}

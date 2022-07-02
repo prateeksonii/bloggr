@@ -1,6 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { blogBySlugValidator } from "../../shared/blog-by-slug.validator";
 import { createBlogValidator } from "../../shared/create-blog.validator";
+import { deleteBlogValidator } from "../../shared/delete-blog.validator";
 import { createRouter } from "../context";
 
 export const blogRouter = createRouter()
@@ -57,6 +58,42 @@ export const blogRouter = createRouter()
 
       return {
         blog,
+      };
+    },
+  })
+  .query("byUser", {
+    async resolve({ input, ctx }) {
+      const blogs = await ctx.prisma.blog.findMany({
+        where: {
+          authorId: ctx.user?.id,
+        },
+      });
+
+      return {
+        blogs,
+      };
+    },
+  })
+  .mutation("delete", {
+    input: deleteBlogValidator,
+    async resolve({ input, ctx }) {
+      if (ctx.user?.id !== input.userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to delete this blog",
+        });
+      }
+
+      console.log(input.blogId);
+
+      await ctx.prisma.blog.delete({
+        where: {
+          id: input.blogId,
+        },
+      });
+
+      return {
+        ok: true,
       };
     },
   });

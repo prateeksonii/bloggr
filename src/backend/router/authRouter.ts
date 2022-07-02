@@ -13,6 +13,9 @@ export const authRouter = createRouter()
         where: {
           email: input.email,
         },
+        include: {
+          blogs: true,
+        },
       });
 
       if (!user) {

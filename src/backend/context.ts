@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Blog, User } from "@prisma/client";
 import * as trpc from "@trpc/server";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { verifyToken } from "./utils/jwt";
@@ -9,7 +9,10 @@ const getUserFromRequest = (req: NextApiRequest) => {
 
   if (token) {
     try {
-      const payload = verifyToken<{ sub: string; user: User }>(token);
+      const payload = verifyToken<{
+        sub: string;
+        user: User & { blogs: Blog[] };
+      }>(token);
       return payload.user;
     } catch (e) {
       return null;
