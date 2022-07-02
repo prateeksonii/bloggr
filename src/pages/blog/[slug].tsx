@@ -4,7 +4,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
-import { toast } from "react-toastify";
 import remarkGfm from "remark-gfm";
 import Navbar from "../../components/Navbar";
 import PageTitle from "../../components/PageTitle";

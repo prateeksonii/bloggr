@@ -1,4 +1,6 @@
 import { NextPage } from "next";
+import { HeartIcon as HeartIconOutline } from "@heroicons/react/outline";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
 import Head from "next/head";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
@@ -28,6 +30,10 @@ const ExplorePage: NextPage = () => {
                     <span className="font-bold">{blog.author.name}</span> on{" "}
                     <span className="font-bold">
                       {blog.createdAt.toDateString()}
+                    </span>
+                    <span className="mt-4 flex items-center gap-2">
+                      <HeartIconSolid className="w-6 h-6" />
+                      <span>{blog.likedBy.length}</span>
                     </span>
                   </p>
                 </div>

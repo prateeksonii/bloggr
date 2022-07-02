@@ -9,7 +9,7 @@ export const blogRouter = createRouter()
   .query("all", {
     async resolve({ ctx }) {
       const blogs = await ctx.prisma.blog.findMany({
-        include: { author: true },
+        include: { author: true, likedBy: true },
       });
 
       return {
