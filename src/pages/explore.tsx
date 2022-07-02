@@ -35,7 +35,7 @@ const ExplorePage: NextPage = () => {
             ))}
           </div>
         ) : (
-          <p>No blogs found</p>
+          <p className="mt-8">No blogs found</p>
         )}
       </div>
     </>
