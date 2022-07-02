@@ -31,17 +31,15 @@ const BlogPage: NextPage = () => {
       <div className="mx-auto w-3/5">
         {data?.blog ? (
           <>
+            <PageTitle title={data?.blog?.title ?? ""} />
             <p className="font-light mt-2">
-              <PageTitle title={data?.blog?.title ?? ""} />
               Published by{" "}
-              <span className="font-bold">
-                {data?.blog?.author.name}
-              </span> on{" "}
+              <span className="font-bold">{data?.blog?.author.name}</span> on{" "}
               <span className="font-bold">
                 {data?.blog?.createdAt.toDateString()}
               </span>
             </p>
-            <article className="my-8 prose prose-invert">
+            <article className="my-8 prose !max-w-full lg:prose-lg prose-invert bg-zinc-900 p-8 rounded-md">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {data?.blog?.content}
               </ReactMarkdown>
