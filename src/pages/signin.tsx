@@ -1,11 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { SigninValidator, signinValidator } from "../shared/signin.validator.";
-import { trpc } from "../utils/trpc";
+import { BASE_URL } from "../utils/constants";
 
 const SigninPage: NextPage = () => {
   const {
@@ -18,15 +19,36 @@ const SigninPage: NextPage = () => {
 
   const router = useRouter();
 
-  const { mutateAsync } = trpc.useMutation("auth.signin");
+  const { mutateAsync, data } = useMutation(async (data: SigninValidator) => {
+    const response = await fetch(`${BASE_URL}/api/v1/auth/signin`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 500) {
+      const { message } = await response.json();
+      return {
+        error: {
+          message,
+        },
+      };
+    }
+
+    return {
+      error: null,
+    };
+  });
 
   const onSubmit: SubmitHandler<SigninValidator> = async (values) => {
-    await toast.promise(mutateAsync(values), {
-      pending: "Signing in...",
-      error: "Failed to sign in",
-      success: "Signed in successfully",
-    });
-    await router.replace("/explore");
+    const res = await mutateAsync(values);
+
+    if (!res.error) {
+      toast.success("Successfully signed in");
+      await router.replace("/explore");
+    } else {
+      toast.error(res.error.message);
+    }
   };
 
   return (

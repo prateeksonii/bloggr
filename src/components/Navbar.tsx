@@ -4,13 +4,21 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 import { userAtom } from "../atoms/userAtom";
-import { trpc } from "../utils/trpc";
 import React from "react";
+import { useMutation } from "@tanstack/react-query";
+import { BASE_URL } from "../utils/constants";
+import { queryClient } from "../pages/_app";
 
 const Navbar = () => {
-  const [user] = useAtom(userAtom);
-  const { mutateAsync } = trpc.useMutation("auth.signout");
-  const trpcContext = trpc.useContext();
+  const [user] = useAtom<any>(userAtom);
+
+  const { mutateAsync } = useMutation(async () => {
+    await fetch(`${BASE_URL}/api/v1/auth/signout`, {
+      method: "DELETE",
+    });
+
+    return null;
+  });
 
   const handleSignout = async () => {
     await toast.promise(mutateAsync(), {
@@ -19,7 +27,7 @@ const Navbar = () => {
       success: "Signed out successfully",
     });
 
-    trpcContext.invalidateQueries("auth.me");
+    queryClient.invalidateQueries(["auth.me"]);
   };
 
   return (
@@ -39,7 +47,7 @@ const Navbar = () => {
                   <div className="rounded-full bg-zinc-700 p-2">
                     {user.name
                       .split(" ")
-                      .map((name) => name[0])
+                      .map((name: string) => name[0])
                       .join(".")}
                   </div>
                   <ChevronUpIcon

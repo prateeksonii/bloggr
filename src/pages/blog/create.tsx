@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { NextPage } from "next";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -8,10 +9,16 @@ import {
   CreateBlogValidator,
   createBlogValidator,
 } from "../../shared/create-blog.validator";
-import { trpc } from "../../utils/trpc";
+import { BASE_URL } from "../../utils/constants";
 
 const CreateBlogPage: NextPage = () => {
-  const { mutateAsync } = trpc.useMutation("blogs.create");
+  const { mutateAsync } = useMutation(async (data: CreateBlogValidator) => {
+    await fetch(`${BASE_URL}/api/v1/blogs`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    return data;
+  });
 
   const { register, handleSubmit } = useForm<CreateBlogValidator>({
     resolver: zodResolver(createBlogValidator),

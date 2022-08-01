@@ -1,4 +1,5 @@
 import { TrashIcon } from "@heroicons/react/solid";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -7,15 +8,22 @@ import { toast } from "react-toastify";
 import { userAtom } from "../atoms/userAtom";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
-import { trpc } from "../utils/trpc";
+import { queryClient } from "./_app";
 
 const ProfilePage: NextPage = () => {
   const [user] = useAtom(userAtom);
 
-  const { isLoading, isError, data } = trpc.useQuery(["blogs.byUser"]);
-  const { mutateAsync } = trpc.useMutation("blogs.delete");
-
-  const trpcContext = trpc.useContext();
+  const { isLoading, isError, data } = useQuery(["blogs.byUser"], async () => {
+    const { blogs } = await fetch(`/api/v1/blogs/user`).then((res) =>
+      res.json()
+    );
+    return blogs;
+  });
+  const { mutateAsync } = useMutation(async (blogId: string) => {
+    await fetch(`/api/v1/blogs/${blogId}`, {
+      method: "DELETE",
+    });
+  });
 
   if (isLoading) return <div>Loading blogs...</div>;
 
@@ -24,18 +32,12 @@ const ProfilePage: NextPage = () => {
   if (!data ?? data?.blogs.length === 0) return <div>No blogs found</div>;
 
   const handleDeleteBlog = async (blogId: string, userId: string) => {
-    await toast.promise(
-      mutateAsync({
-        blogId,
-        userId,
-      }),
-      {
-        pending: "Deleting blog...",
-        success: "Blog deleted",
-        error: "Something went wrong",
-      }
-    );
-    trpcContext.invalidateQueries(["blogs.byUser"]);
+    await toast.promise(mutateAsync(blogId), {
+      pending: "Deleting blog...",
+      success: "Blog deleted",
+      error: "Something went wrong",
+    });
+    queryClient.invalidateQueries(["blogs.byUser"]);
   };
 
   return (
@@ -52,7 +54,7 @@ const ProfilePage: NextPage = () => {
             Total blogs published:{" "}
             <span className="font-bold text-2xl">{data?.blogs?.length}</span>
           </p>
-          {data?.blogs.map((blog) => (
+          {data?.blogs.map((blog: any) => (
             <div
               key={blog.id}
               className="p-4 bg-zinc-900 rounded-md flex items-center justify-between"

@@ -1,15 +1,14 @@
 import { NextPage } from "next";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Navbar from "../components/Navbar";
-
-import { trpc } from "../utils/trpc";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Navbar from "../components/Navbar";
 import {
   createUserValidator,
   CreateUserValidator,
 } from "../shared/create-user.validator";
+import { useMutation } from "@tanstack/react-query";
 
 const SignupPage: NextPage = () => {
   const {
@@ -22,7 +21,13 @@ const SignupPage: NextPage = () => {
 
   const router = useRouter();
 
-  const { mutateAsync } = trpc.useMutation("users.create");
+  const { mutateAsync } = useMutation(async (data: CreateUserValidator) => {
+    await fetch("/api/v1/users", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    return data;
+  });
 
   const onSubmit: SubmitHandler<CreateUserValidator> = async (values) => {
     await toast.promise(mutateAsync(values), {
