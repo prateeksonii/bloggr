@@ -13,13 +13,13 @@ import { BASE_URL } from "../utils/constants";
 import { queryClient } from "./_app";
 
 const ProfilePage: NextPage = () => {
-  const [user] = useAtom(userAtom);
+  const [user] = useAtom<any>(userAtom);
 
   const {
     isLoading,
     isError,
     data: blogs,
-  } = useQuery(["blogs.byUser"], async () => {
+  } = useQuery<any>(["blogs.byUser"], async () => {
     const blogs = await fetch(`${BASE_URL}/api/v1/blogs/user`, {
       credentials: "include",
     }).then((res) => res.json());

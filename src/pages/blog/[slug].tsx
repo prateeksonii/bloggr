@@ -18,7 +18,7 @@ const BlogPage: NextPage = () => {
   const router = useRouter();
   const { slug } = router.query;
 
-  const [user] = useAtom(userAtom);
+  const [user] = useAtom<any>(userAtom);
 
   const { data, isLoading, isError } = useQuery<any>(
     ["blogs.bySlug"],
