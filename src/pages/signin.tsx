@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { SigninValidator, signinValidator } from "../shared/signin.validator.";
 import { BASE_URL } from "../utils/constants";
+import { queryClient } from "./_app";
 
 const SigninPage: NextPage = () => {
   const {
@@ -19,10 +20,11 @@ const SigninPage: NextPage = () => {
 
   const router = useRouter();
 
-  const { mutateAsync, data } = useMutation(async (data: SigninValidator) => {
+  const { mutateAsync } = useMutation(async (data: SigninValidator) => {
     const response = await fetch(`${BASE_URL}/api/v1/auth/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(data),
     });
 
@@ -34,6 +36,8 @@ const SigninPage: NextPage = () => {
         },
       };
     }
+
+    queryClient.invalidateQueries(["auth.me"]);
 
     return {
       error: null,

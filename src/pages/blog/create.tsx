@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import Navbar from "../../components/Navbar";
@@ -12,12 +13,27 @@ import {
 import { BASE_URL } from "../../utils/constants";
 
 const CreateBlogPage: NextPage = () => {
+  const router = useRouter();
+
   const { mutateAsync } = useMutation(async (data: CreateBlogValidator) => {
-    await fetch(`${BASE_URL}/api/v1/blogs`, {
+    const response = await fetch(`${BASE_URL}/api/v1/blogs`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    return data;
+
+    if (response.status === 500) {
+      const { message } = await response.json();
+      return {
+        error: {
+          message,
+        },
+      };
+    }
+
+    return {
+      error: null,
+    };
   });
 
   const { register, handleSubmit } = useForm<CreateBlogValidator>({
@@ -25,11 +41,13 @@ const CreateBlogPage: NextPage = () => {
   });
 
   const onSubmit: SubmitHandler<CreateBlogValidator> = async (values) => {
-    await toast.promise(mutateAsync(values), {
-      pending: "Publishing blog...",
-      error: "Failed to publish blog",
-      success: "Blog published successfully",
-    });
+    const res = await mutateAsync(values);
+    if (!res.error) {
+      toast.success("Successfully created blog");
+      await router.push("/explore");
+    } else {
+      toast.error(res.error.message);
+    }
   };
 
   return (

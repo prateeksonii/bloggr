@@ -8,13 +8,14 @@ import { toast } from "react-toastify";
 import { userAtom } from "../atoms/userAtom";
 import Navbar from "../components/Navbar";
 import PageTitle from "../components/PageTitle";
+import { BASE_URL } from "../utils/constants";
 import { queryClient } from "./_app";
 
 const ProfilePage: NextPage = () => {
   const [user] = useAtom(userAtom);
 
   const { isLoading, isError, data } = useQuery(["blogs.byUser"], async () => {
-    const { blogs } = await fetch(`/api/v1/blogs/user`).then((res) =>
+    const { blogs } = await fetch(`${BASE_URL}/api/v1/blogs/user`).then((res) =>
       res.json()
     );
     return blogs;

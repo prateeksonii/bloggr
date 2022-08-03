@@ -9,6 +9,7 @@ import {
   CreateUserValidator,
 } from "../shared/create-user.validator";
 import { useMutation } from "@tanstack/react-query";
+import { BASE_URL } from "../utils/constants";
 
 const SignupPage: NextPage = () => {
   const {
@@ -22,21 +23,34 @@ const SignupPage: NextPage = () => {
   const router = useRouter();
 
   const { mutateAsync } = useMutation(async (data: CreateUserValidator) => {
-    await fetch("/api/v1/users", {
+    const response = await fetch(`${BASE_URL}/api/v1/users`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    return data;
+    if (response.status === 500) {
+      const { message } = await response.json();
+      return {
+        error: {
+          message,
+        },
+      };
+    }
+
+    return {
+      error: null,
+    };
   });
 
   const onSubmit: SubmitHandler<CreateUserValidator> = async (values) => {
-    await toast.promise(mutateAsync(values), {
-      pending: "Creating user...",
-      error: "Failed to create user",
-      success: "User created successfully",
-    });
+    const res = await mutateAsync(values);
 
-    await router.push("/signin");
+    if (!res.error) {
+      toast.success("Successfully signed up");
+      await router.replace("/signin");
+    } else {
+      toast.error(res.error.message);
+    }
   };
 
   return (

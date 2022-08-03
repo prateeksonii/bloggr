@@ -16,18 +16,18 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: user, isLoading } = useQuery(
     ["auth.me"],
     async () => {
-      const { user } = await fetch(`${BASE_URL}/api/v1/auth/me`).then((res) =>
-        res.json()
-      );
+      const user = await fetch(`${BASE_URL}/api/v1/auth/me`, {
+        credentials: "include",
+      }).then((res) => res.json());
       return user ?? null;
     },
     {
-      onSettled(data, error: any) {
+      onSettled(user, error: any) {
         if (error) {
           toast.error(error.message);
         }
 
-        setUser(data?.user ?? null);
+        setUser(user ?? null);
         setLoadingUser(false);
       },
     }
