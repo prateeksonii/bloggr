@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
 import Head from "next/head";
 import Link from "next/link";
+import superjson from "superjson";
 import Navbar from "../components/Navbar";
 import { useQuery } from "@tanstack/react-query";
 import { BASE_URL } from "../utils/constants";
@@ -11,11 +12,11 @@ const ExplorePage: NextPage = () => {
     data: blogs,
     isLoading,
     isError,
-  } = useQuery(["blogs.all"], async () => {
+  } = useQuery<any>(["blogs.all"], async () => {
     const blogs = await fetch(`${BASE_URL}/api/v1/blogs`, {
       credentials: "include",
     }).then((res) => res.json());
-    return blogs;
+    return superjson.parse(blogs);
   });
 
   return (

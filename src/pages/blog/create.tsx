@@ -19,6 +19,7 @@ const CreateBlogPage: NextPage = () => {
     const response = await fetch(`${BASE_URL}/api/v1/blogs`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(data),
     });
 
