@@ -45,7 +45,7 @@ const Navbar = () => {
               <>
                 <Popover.Button className="flex items-center gap-2 rounded-md outline-none">
                   <div className="rounded-full bg-zinc-700 p-2">
-                    {user.name
+                    {user?.name
                       .split(" ")
                       .map((name: string) => name[0])
                       .join(".")}
@@ -67,7 +67,7 @@ const Navbar = () => {
                 >
                   <Popover.Panel className="absolute top-[140%] right-0 min-w-[300px]">
                     <div className="bg-zinc-900 w-full grid gap-3 p-4 rounded-md text-center">
-                      <span>Welcome, {user.name}</span>
+                      <span>Welcome, {user?.name}</span>
                       <Link href="/profile">
                         <a className="block py-2 px-4 rounded w-full font-bold bg-zinc-700">
                           View profile
