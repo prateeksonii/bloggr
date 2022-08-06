@@ -16,10 +16,12 @@ const Layout: FC<{ children: ReactNode }> = ({ children }) => {
   const { data: user, isLoading } = useQuery(
     ["auth.me"],
     async () => {
-      const user = await fetch(`${BASE_URL}/api/v1/auth/me`, {
+      const res = await fetch(`${BASE_URL}/api/v1/auth/me`, {
         credentials: "include",
-      }).then((res) => res.json());
-      return user ?? null;
+      });
+      if (res.status !== 200) return null;
+      const user = await res.json();
+      return user;
     },
     {
       onSettled(user, error: any) {

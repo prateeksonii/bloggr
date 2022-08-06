@@ -30,6 +30,8 @@ const Navbar = () => {
     queryClient.invalidateQueries(["auth.me"]);
   };
 
+  console.log(user);
+
   return (
     <nav className="w-3/5 mx-auto h-[80px] flex items-center justify-between">
       <Link href="/explore">
